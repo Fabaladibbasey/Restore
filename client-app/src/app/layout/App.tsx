@@ -2,8 +2,8 @@ import { createTheme, CssBaseline, ThemeProvider } from "@mui/material";
 import { grey, blueGrey } from "@mui/material/colors";
 import { Container } from "@mui/system";
 import { useState } from "react";
-import Catalog from "../../features/catalog/Catalog";
 import Header from "./Header";
+import { Outlet } from "react-router-dom";
 
 function App() {
   const [darkMode, setDarkMode] = useState(true);
@@ -25,8 +25,12 @@ function App() {
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Header onHandleDarkMode={onHandleDarkMode} darkMode={darkMode} />
-      <Container>
-        <Catalog />
+      <Container
+        sx={{
+          marginY: "2rem",
+        }}
+      >
+        <Outlet />
       </Container>
     </ThemeProvider>
   );

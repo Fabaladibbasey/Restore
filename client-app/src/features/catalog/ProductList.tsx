@@ -9,7 +9,7 @@ interface Props {
 function ProductList({ products }: Props) {
   return (
     <>
-      <Grid container spacing={2} marginY="2rem" justifyContent="center">
+      <Grid container spacing={2} justifyContent="center">
         {products.map((product) => (
           <Grid
             item
