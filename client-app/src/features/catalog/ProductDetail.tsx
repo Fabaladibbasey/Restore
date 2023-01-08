@@ -12,21 +12,23 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
+import agent from "../../app/api/agent";
+import LoadingComponent from "../../app/layout/LoadingComponent";
 
 function ProductDetail() {
   const { id } = useParams<{ id: string }>();
   const [product, setProduct] = useState<Product | null>(null);
 
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
-    axios
-      .get(`http://localhost:5070/api/products/${id}`)
-      .then((response) => {
-        setProduct(response.data);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    agent.Catalog.details(id!)
+      .then((response) => setProduct(response))
+      .catch((error) => console.log(error))
+      .finally(() => setLoading(false));
   }, [id]);
+
+  if (loading) return <LoadingComponent message="Loading product..." />;
 
   return (
     <>

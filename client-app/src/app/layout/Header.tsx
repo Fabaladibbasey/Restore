@@ -41,7 +41,7 @@ function Header({ darkMode, onHandleDarkMode }: Props) {
     setAnchorElUser(null);
   };
 
-  const pages = ["Catalog", "About", "Contact"];
+  const pages = ["Catalog", "About", "Contact", "Test-Error"];
   const settings = ["Profile", "Account", "Dashboard", "Logout"];
   return (
     <AppBar position="static">

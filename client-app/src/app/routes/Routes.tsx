@@ -4,7 +4,10 @@ import Catalog from "../../features/catalog/Catalog";
 import ProductDetail from "../../features/catalog/ProductDetail";
 import Contact from "../../features/contact/Contact";
 import Home from "../../features/home/Home";
+import NotFound from "../errors/NotFound";
+import ServerError from "../errors/ServerError";
 import App from "../layout/App";
+import TestErrors from "../layout/TestErrors";
 
 export const routes: RouteObject[] = [
   {
@@ -31,11 +34,19 @@ export const routes: RouteObject[] = [
         path: "about",
         element: <About />,
       },
+      {
+        path: "test-error",
+        element: <TestErrors />,
+      },
+      {
+        path: "server-error",
+        element: <ServerError />,
+      },
     ],
   },
   {
     path: "*",
-    element: <h1>Not Found</h1>,
+    element: <NotFound />,
   },
 ];
 
