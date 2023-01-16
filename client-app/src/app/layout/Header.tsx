@@ -1,6 +1,7 @@
 import {
   AppBar,
   Avatar,
+  Badge,
   Box,
   Button,
   Container,
@@ -14,8 +15,9 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import { ShoppingCart, Store } from "@mui/icons-material";
+import { useStoreContext } from "../context/StoreContext";
 
 interface Props {
   darkMode: boolean;
@@ -25,6 +27,10 @@ interface Props {
 function Header({ darkMode, onHandleDarkMode }: Props) {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+
+  const { basket } = useStoreContext();
+  const itemCount =
+    basket?.items.reduce((a, b) => a + (b.quantity || 0), 0) || 0;
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -156,7 +162,29 @@ function Header({ darkMode, onHandleDarkMode }: Props) {
           </Box>
 
           <Box marginRight="1.2rem">
-            <IconButton size="large" color="inherit">
+            <IconButton
+              component={Link}
+              to="/basket"
+              size="large"
+              color="inherit"
+              sx={{ position: "relative" }}
+            >
+              <Badge
+                badgeContent={itemCount}
+                color="secondary"
+                sx={{
+                  position: "absolute",
+                  top: 8,
+                  right: 8,
+                  border: (theme) =>
+                    `2px solid ${theme.palette.background.paper}`,
+                  padding: "0 4px",
+                  borderRadius: "50%",
+                  transform: "scale(0.7)",
+                  transformOrigin: "top right",
+                  zIndex: 1,
+                }}
+              />
               <ShoppingCart />
             </IconButton>
           </Box>
