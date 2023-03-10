@@ -17,7 +17,7 @@ import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, NavLink } from "react-router-dom";
 import { ShoppingCart, Store } from "@mui/icons-material";
-import { useStoreContext } from "../context/StoreContext";
+import { useAppSelector } from "../store/configureStore";
 
 interface Props {
   darkMode: boolean;
@@ -28,7 +28,7 @@ function Header({ darkMode, onHandleDarkMode }: Props) {
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
-  const { basket } = useStoreContext();
+  const { basket } = useAppSelector((state) => state.basket);
   const itemCount =
     basket?.items.reduce((a, b) => a + (b.quantity || 0), 0) || 0;
 

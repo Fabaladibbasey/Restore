@@ -35,7 +35,7 @@ export function StoreProvider({ children }: { children: React.ReactNode }) {
     } else {
       newBasket.items.splice(itemIndex, 1);
     }
-
+    newBasket.subTotal -= item.price * quantity;
     setBasket(newBasket);
   };
 

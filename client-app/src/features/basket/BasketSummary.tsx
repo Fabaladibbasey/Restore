@@ -6,15 +6,12 @@ import {
   TableRow,
   TableCell,
 } from "@mui/material";
-import { useStoreContext } from "../../app/context/StoreContext";
+import { useAppSelector } from "../../app/store/configureStore";
 import { currencyFormat } from "../../app/util/util";
 
 export default function BasketSummary() {
-  const { basket } = useStoreContext();
-  const subtotal =
-    basket?.items.reduce((sum, item) => sum + item.quantity * item.price, 0) ??
-    0;
-  const deliveryFee = subtotal > 10000 ? 0 : 500;
+  const { basket } = useAppSelector((state) => state.basket);
+  const deliveryFee = basket?.subTotal! > 10000 ? 0 : 500;
 
   return (
     <>
@@ -23,7 +20,9 @@ export default function BasketSummary() {
           <TableBody>
             <TableRow>
               <TableCell colSpan={2}>Subtotal</TableCell>
-              <TableCell align="right">{currencyFormat(subtotal)}</TableCell>
+              <TableCell align="right">
+                {currencyFormat(basket?.subTotal!)}
+              </TableCell>
             </TableRow>
             <TableRow>
               <TableCell colSpan={2}>Delivery fee*</TableCell>
@@ -32,7 +31,7 @@ export default function BasketSummary() {
             <TableRow>
               <TableCell colSpan={2}>Total</TableCell>
               <TableCell align="right">
-                {currencyFormat(subtotal + deliveryFee)}
+                {currencyFormat(basket?.subTotal! + deliveryFee)}
               </TableCell>
             </TableRow>
             <TableRow>

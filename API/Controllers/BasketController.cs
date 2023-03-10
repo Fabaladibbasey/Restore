@@ -27,7 +27,7 @@ public class BasketController : BaseApiController
     {
         var basket = await RetrieveBasket();
         var product = await _context.Products.FindAsync(productId);
-        if (product == null) return NotFound();
+        if (product == null) return BadRequest(new ProblemDetails { Title = "Product not found" });
 
         basket.AddItem(productId, quantity);
         var result = await _context.SaveChangesAsync() > 0;
@@ -45,8 +45,8 @@ public class BasketController : BaseApiController
         var basket = await RetrieveBasket();
         basket.RemoveItem(productId, quantity);
         var result = await _context.SaveChangesAsync() > 0;
-        if (result && basket.Items.Any(_ => true)) return Ok();
 
+        if (result) return Ok();
         return BadRequest(new ProblemDetails { Title = "Problem deleting item from basket" });
 
     }
