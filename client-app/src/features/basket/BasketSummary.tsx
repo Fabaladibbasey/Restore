@@ -15,7 +15,11 @@ export default function BasketSummary() {
 
   return (
     <>
-      <TableContainer component={Paper} variant={"outlined"}>
+      <TableContainer
+        component={Paper}
+        variant={"outlined"}
+        sx={{ marginTop: 2 }}
+      >
         <Table>
           <TableBody>
             <TableRow>

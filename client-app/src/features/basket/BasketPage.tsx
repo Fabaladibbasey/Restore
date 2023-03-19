@@ -58,7 +58,14 @@ export default function BasketPage() {
                 <TableCell align="right">
                   ${(item.price / 100).toFixed(2)}
                 </TableCell>
-                <TableCell align="center">
+                <TableCell
+                  align="center"
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                >
                   <LoadingButton
                     loading={
                       status ===
@@ -123,7 +130,7 @@ export default function BasketPage() {
       </TableContainer>
       <Grid container>
         <Grid item xs={6} />
-        <Grid item xs={6}>
+        <Grid item xs={12} md={6}>
           <BasketSummary />
           <Button
             component={Link}
