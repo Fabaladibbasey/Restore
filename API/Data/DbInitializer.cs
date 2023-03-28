@@ -1,17 +1,54 @@
 using API.Entities;
+using Microsoft.AspNetCore.Identity;
 
 namespace API.Data;
 
 public static class DbInitializer
 {
-    public static async Task Initialize(StoreContext context)
+    public static async Task Initialize(StoreContext context, UserManager<User> userManager)
     {
         context.Database.EnsureCreated();
 
-        // Look for any products.
+        if (userManager.Users.Any())
+        {
+            return;
+        }
+
+        var users = new User[]{
+            new User
+            {
+                UserName = "admin",
+                Email = "admin@localhost",
+                EmailConfirmed = true,
+                PhoneNumber = "1234567890",
+                PhoneNumberConfirmed = true
+            },
+            new User
+            {
+                UserName = "member",
+                Email = "member@localhost",
+                EmailConfirmed = true,
+                PhoneNumber = "1234567890",
+                PhoneNumberConfirmed = true
+            }
+        };
+
+        foreach (var user in users)
+        {
+            await userManager.CreateAsync(user, "Pa$$w0rd");
+            if (user.UserName == "admin")
+            {
+                await userManager.AddToRolesAsync(user, new[] { "Admin", "Member" });
+            }
+            else
+            {
+                await userManager.AddToRoleAsync(user, "Member");
+            }
+        }
+
         if (context.Products.Any())
         {
-            return;   // DB has been seeded
+            return;
         }
 
         var products = new Product[]

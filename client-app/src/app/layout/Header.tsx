@@ -17,7 +17,8 @@ import { useState } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { Link, NavLink } from "react-router-dom";
 import { ShoppingCart, Store } from "@mui/icons-material";
-import { useAppSelector } from "../store/configureStore";
+import { useAppDispatch, useAppSelector } from "../store/configureStore";
+import { logoutUser } from "../../features/account/accountSlice";
 
 interface Props {
   darkMode: boolean;
@@ -25,12 +26,15 @@ interface Props {
 }
 
 function Header({ darkMode, onHandleDarkMode }: Props) {
+  const dispatch = useAppDispatch();
+  const { user } = useAppSelector((state) => state.account);
+
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
   const { basket } = useAppSelector((state) => state.basket);
   const itemCount =
-    basket?.items.reduce((a, b) => a + (b.quantity || 0), 0) || 0;
+    basket?.items.reduce((a, b) => a + (b.quantity || 0), 0) ?? 0;
 
   const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
     setAnchorElNav(event.currentTarget);
@@ -48,7 +52,11 @@ function Header({ darkMode, onHandleDarkMode }: Props) {
   };
 
   const pages = ["Catalog", "About", "Contact", "Test-Error"];
-  const settings = ["Profile", "Account", "Dashboard", "Logout"];
+
+  const settings = user
+    ? ["Profile", "Account", "My orders", "Logout"]
+    : ["Login", "Register"];
+
   return (
     <AppBar position="static">
       <Container maxWidth="xl">
@@ -211,16 +219,31 @@ function Header({ darkMode, onHandleDarkMode }: Props) {
               open={Boolean(anchorElUser)}
               onClose={handleCloseUserMenu}
             >
-              {settings.map((setting) => (
-                <MenuItem
-                  key={setting}
-                  onClick={handleCloseUserMenu}
-                  component={NavLink}
-                  to={setting}
-                >
-                  <Typography textAlign="center">{setting}</Typography>
-                </MenuItem>
-              ))}
+              {settings.map((setting) => {
+                if (setting === "Logout") {
+                  return (
+                    <MenuItem
+                      key={setting}
+                      onClick={() => {
+                        dispatch(logoutUser());
+                        handleCloseUserMenu();
+                      }}
+                    >
+                      <Typography textAlign="center">{setting}</Typography>
+                    </MenuItem>
+                  );
+                }
+                return (
+                  <MenuItem
+                    key={setting}
+                    onClick={handleCloseUserMenu}
+                    component={NavLink}
+                    to={setting}
+                  >
+                    <Typography textAlign="center">{setting}</Typography>
+                  </MenuItem>
+                );
+              })}
             </Menu>
           </Box>
         </Toolbar>
