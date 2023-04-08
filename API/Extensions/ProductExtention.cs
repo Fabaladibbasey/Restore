@@ -46,28 +46,4 @@ public static class ProductExtention
         return query;
     }
 
-
-    public static BasketDto MapBasketToDto(this Basket basket)
-    {
-        var basketDto = new BasketDto
-        {
-            Id = basket.Id,
-            BuyerId = basket.BuyerId,
-            Items = basket.Items.Select(i => new BasketItemDto
-            {
-                ProductId = i.ProductId,
-                ProductName = i.Product.Name,
-                Price = i.Product.Price,
-                PictureUrl = i.Product.PictureUrl,
-                Quantity = i.Quantity,
-                Brand = i.Product.Brand,
-                Type = i.Product.Type
-
-            }).ToList(),
-            subTotal = basket.subTotal
-        };
-
-        return basketDto;
-    }
-
 }

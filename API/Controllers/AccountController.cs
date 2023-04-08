@@ -1,4 +1,3 @@
-using System.Security.Claims;
 using API.Data;
 using API.DTOs;
 using API.Entities;
@@ -92,12 +91,20 @@ public class AccountController : BaseApiController
     [HttpGet("currentUser")]
     public async Task<ActionResult<UserDto>> CurrentUser()
     {
-        var user = await _userManager.FindByEmailAsync(User.FindFirstValue(ClaimTypes.Email));
+        var user = await _userManager.FindByNameAsync(User.Identity?.Name!);
+        if (user == null) return Unauthorized();
 
+        var userAddress = await _context.Users
+            .Include(x => x.UserAddress)
+            .SingleOrDefaultAsync(x => x.UserName == user.UserName);
+
+        var userBasket = await _basketServices.RetrieveBasket(user.UserName);
         return new UserDto
         {
-            Username = user.UserName,
-            Token = await _tokenService.CreateToken(user)
+            Username = user.UserName!,
+            Token = await _tokenService.CreateToken(user),
+            Basket = userBasket.MapBasketToDto(),
+            UserAddress = userAddress?.UserAddress
         };
     }
 

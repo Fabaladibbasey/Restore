@@ -1,5 +1,5 @@
 import { Grid, Paper } from "@mui/material";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import AppPagination from "../../app/components/AppPagination";
 import CheckboxButtons from "../../app/components/CheckboxButtons";
 import RadioButtonGroup from "../../app/components/RadioButtonGroup";
@@ -32,6 +32,8 @@ function Catalog() {
     metaData,
   } = useAppSelector((state) => state.catalog);
 
+  const [showFilters, setShowFilters] = useState(false);
+
   useEffect(() => {
     if (!productsLoaded) dispatch(fetchProductsAsync());
   }, [productsLoaded, dispatch]);
@@ -40,50 +42,65 @@ function Catalog() {
     if (!filtersLoaded) dispatch(fetchFiltersAsync());
   }, [dispatch, filtersLoaded]);
 
+  const handleShowFilters = (e: any) => {
+    if (e && window.innerWidth < 900) setShowFilters(!showFilters);
+    else if (window.innerWidth < 900) setShowFilters(false);
+    else setShowFilters(true);
+  };
+
+  useEffect(() => {
+    window.addEventListener("resize", () => handleShowFilters(null));
+    handleShowFilters(null);
+    return () =>
+      window.removeEventListener("resize", () => handleShowFilters(null));
+  }, []);
+
   if (!filtersLoaded) return <LoadingComponent message="Loading products..." />;
 
   return (
     <>
       <Paper sx={{ mb: 2 }}>
-        <ProductSearch />
+        <ProductSearch onClick={(e: any) => handleShowFilters(e)} />
       </Paper>
       <Grid container columnSpacing={4}>
-        <Grid item xs={12} md={3}>
-          <Paper sx={{ mb: 2, p: 2 }}>
-            <RadioButtonGroup
-              options={sortOptions}
-              seletedValue={productParams.orderBy}
-              onChange={(e) =>
-                dispatch(setProductParams({ orderBy: e.target.value }))
-              }
-            />
-          </Paper>
-          <Paper sx={{ mb: 2, p: 2 }}>
-            <CheckboxButtons
-              title="Brands"
-              items={brands}
-              checkedItems={productParams.brands || []}
-              onChange={(checked) =>
-                dispatch(setProductParams({ brands: checked }))
-              }
-            />
-          </Paper>
+        {showFilters && (
+          <Grid item xs={12} md={3}>
+            <Paper sx={{ mb: 2, p: 2 }}>
+              <RadioButtonGroup
+                options={sortOptions}
+                seletedValue={productParams.orderBy}
+                onChange={(e) =>
+                  dispatch(setProductParams({ orderBy: e.target.value }))
+                }
+              />
+            </Paper>
+            <Paper sx={{ mb: 2, p: 2 }}>
+              <CheckboxButtons
+                title="Brands"
+                items={brands}
+                checkedItems={productParams.brands || []}
+                onChange={(checked) =>
+                  dispatch(setProductParams({ brands: checked }))
+                }
+              />
+            </Paper>
 
-          <Paper sx={{ mb: 2, p: 2 }}>
-            <CheckboxButtons
-              title="Types"
-              items={types}
-              checkedItems={productParams.types || []}
-              onChange={(checked) =>
-                dispatch(setProductParams({ types: checked }))
-              }
-            />
-          </Paper>
-        </Grid>
+            <Paper sx={{ mb: 2, p: 2 }}>
+              <CheckboxButtons
+                title="Types"
+                items={types}
+                checkedItems={productParams.types || []}
+                onChange={(checked) =>
+                  dispatch(setProductParams({ types: checked }))
+                }
+              />
+            </Paper>
+          </Grid>
+        )}
+
         <Grid item xs={12} md={9}>
           <ProductList products={products} />
         </Grid>
-
         <Grid item xs={3}></Grid>
         <Grid item xs={12} md={9} sx={{ mt: 2 }}>
           {metaData && (

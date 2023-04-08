@@ -58,6 +58,16 @@ public class Basket
         }
     }
 
+    public int GetItemQuantity(int productId)
+    {
+        var item = Items.FirstOrDefault(x => x.ProductId == productId);
+        if (item != null)
+        {
+            return item.Quantity;
+        }
+        return 0;
+    }
+
 
 
 }

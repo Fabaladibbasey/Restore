@@ -1,4 +1,5 @@
 import { Basket } from "./basket";
+import { ShippingAddress } from "./order";
 
 export interface User {
     id: number;
@@ -7,5 +8,6 @@ export interface User {
     firstName: string;
     lastName: string;
     token?: string;
-    basket?: Basket
+    basket?: Basket,
+    userAddress? : ShippingAddress
 }

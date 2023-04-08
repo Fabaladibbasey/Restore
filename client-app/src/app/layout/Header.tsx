@@ -54,7 +54,7 @@ function Header({ darkMode, onHandleDarkMode }: Props) {
   const pages = ["Catalog", "About", "Contact", "Test-Error"];
 
   const settings = user
-    ? ["Profile", "Account", "My orders", "Logout"]
+    ? ["Profile", "Account", "Orders", "Logout"]
     : ["Login", "Register"];
 
   return (
@@ -66,24 +66,6 @@ function Header({ darkMode, onHandleDarkMode }: Props) {
             onChange={onHandleDarkMode}
             inputProps={{ "aria-label": "controlled" }}
           />
-          <Store sx={{ display: { xs: "none", md: "flex" }, mr: 1 }} />
-          <Typography
-            variant="h6"
-            noWrap
-            component={NavLink}
-            to="/"
-            sx={{
-              mr: 2,
-              display: { xs: "none", md: "flex" },
-              fontFamily: "monospace",
-              fontWeight: 700,
-              letterSpacing: ".3rem",
-              color: "inherit",
-              textDecoration: "none",
-            }}
-          >
-            Re-Store
-          </Typography>
 
           <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
             <IconButton
@@ -126,21 +108,22 @@ function Header({ darkMode, onHandleDarkMode }: Props) {
               ))}
             </Menu>
           </Box>
-          <Store sx={{ display: { xs: "flex", md: "none" }, mr: 1 }} />
+          <Store sx={{ display: "flex", mr: 1 }} />
           <Typography
-            variant="h5"
+            variant="h6"
             noWrap
             component={NavLink}
             to="/"
             sx={{
               mr: 2,
-              display: { xs: "flex", md: "none" },
-              flexGrow: 1,
+              display: "flex",
               fontFamily: "monospace",
               fontWeight: 700,
               letterSpacing: ".3rem",
               color: "inherit",
               textDecoration: "none",
+              alignSelf: "center",
+              wordWrap: "break-word",
             }}
           >
             Re-Store
@@ -197,12 +180,42 @@ function Header({ darkMode, onHandleDarkMode }: Props) {
             </IconButton>
           </Box>
 
-          <Box sx={{ flexGrow: 0 }}>
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignSelf: "center",
+            }}
+          >
             <Tooltip title="Open settings">
-              <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                <Avatar alt="Remy Sharp" src="" />
+              <IconButton
+                onClick={handleOpenUserMenu}
+                color="inherit"
+                sx={{
+                  padding: 0,
+                  display: "flex",
+                  placeSelf: "center",
+                }}
+              >
+                <Avatar alt={user?.username} src="" />
               </IconButton>
             </Tooltip>
+            {user && (
+              <Typography
+                variant="body2"
+                sx={{
+                  display: "flex",
+                  flexGrow: 1,
+                  fontFamily: "monospace",
+                  fontWeight: 700,
+                  letterSpacing: ".3rem",
+                  color: "inherit",
+                  textDecoration: "none",
+                }}
+              >
+                {user.username}
+              </Typography>
+            )}
             <Menu
               sx={{ mt: "45px" }}
               id="menu-appbar"

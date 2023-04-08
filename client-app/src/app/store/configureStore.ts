@@ -13,6 +13,7 @@ import { counterSlice } from "../../features/contact/counterSlice";
 import { basketSlice } from "../../features/basket/basketSlice";
 import { catalogSlice } from "../../features/catalog/catalogSlice";
 import { accountSlice } from "../../features/account/accountSlice";
+import { orderSlice } from "../../features/order/orderSlice";
 
 export const store = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
         basket: basketSlice.reducer,
         catalog: catalogSlice.reducer,
         account: accountSlice.reducer,
+        order: orderSlice.reducer,
     }
 })
 

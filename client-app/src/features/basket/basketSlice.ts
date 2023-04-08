@@ -52,7 +52,11 @@ export const basketSlice = createSlice({
     reducers: {
         setBasket: (state: BasketState, action) => {
             state.basket = action.payload
+        },
+        clearBasket : (state: BasketState) => {
+            state.basket = null
         }
+
     },
     extraReducers: (builder) => {
         builder
@@ -91,4 +95,4 @@ export const basketSlice = createSlice({
     }
 })
 
-export const { setBasket } = basketSlice.actions
+export const { setBasket, clearBasket } = basketSlice.actions

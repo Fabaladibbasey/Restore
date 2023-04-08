@@ -13,6 +13,7 @@ import ServerError from "../errors/ServerError";
 import App from "../layout/App";
 import TestErrors from "../layout/TestErrors";
 import RouterAuth from "./RouterAuth";
+import Orders from "../../features/order/Orders";
 
 export const routes: RouteObject[] = [
   {
@@ -26,6 +27,7 @@ export const routes: RouteObject[] = [
             path: "checkout",
             element: <CheckoutPage />,
           },
+          { path: "orders", element: <Orders /> },
         ],
       },
       {

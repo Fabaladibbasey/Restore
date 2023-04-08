@@ -30,6 +30,7 @@ public class BasketController : BaseApiController
         var basket = await _basketServices.RetrieveBasket(GetBuyerId());
         var product = await _context.Products.FindAsync(productId);
         if (product == null) return BadRequest(new ProblemDetails { Title = "Product not found" });
+        if (product.QuantityInStock < (quantity + basket.GetItemQuantity(productId))) return BadRequest(new ProblemDetails { Title = "Not enough stock" });
 
         basket.AddItem(productId, quantity);
         var result = await _context.SaveChangesAsync() > 0;

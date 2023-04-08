@@ -126,7 +126,10 @@ function ProductDetail() {
             </Grid>
             <Grid item xs={6}>
               <LoadingButton
-                disabled={item?.quantity === quantity}
+                disabled={
+                  item?.quantity === quantity ||
+                  quantity > product.quantityInStock
+                }
                 loading={status.includes("pending")}
                 onClick={handleUpdateCart}
                 sx={{ height: "55px" }}

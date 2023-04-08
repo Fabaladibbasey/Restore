@@ -19,6 +19,7 @@ public class ProductsController : BaseApiController
     public async Task<ActionResult<PageList<Product>>> GetProducts([FromQuery] ProductParams productParams)
     {
         var query = _context.Products
+            .Where(p => p.QuantityInStock > 0)
             .Search(productParams.SearchTerm)
             .Filter(productParams.Brands, productParams.Types)
             .Sort(productParams.OrderBy)
