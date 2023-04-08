@@ -70,6 +70,7 @@ export const orderSlice = createSlice({
         builder.addCase(createOrder.fulfilled, (state, action) => {
             state.status = 'succeeded'
             state.order = action.payload
+            state.ordersLoaded = false
         })
         builder.addCase(createOrder.rejected, (state, action) => {
             state.status = 'failed'
