@@ -15,19 +15,15 @@ import { currencyFormat } from "../../app/util/util";
 import { removeItemFromBasketAsync, addBasketItemAsync } from "./basketSlice";
 import { BasketItem } from "../../app/models/basket";
 import { useAppSelector, useAppDispatch } from "../../app/store/configureStore";
-import { Product } from "../../app/models/product";
 
 interface Props {
   items: BasketItem[];
   isBasket?: boolean;
-  products?: Product[];
 }
 
-function BasketTable({ items, isBasket = true, products }: Props) {
+function BasketTable({ items, isBasket = true }: Props) {
   const { status } = useAppSelector((state) => state.basket);
   const dispatch = useAppDispatch();
-
-  const getProduct = (id: number) => products?.find((p) => p.id === id);
 
   return (
     <TableContainer component={Paper}>
@@ -96,15 +92,8 @@ function BasketTable({ items, isBasket = true, products }: Props) {
 
                 {isBasket && (
                   <LoadingButton
-                    loading={
-                      status === "pendingAddItem" + item.productId ||
-                      !getProduct(item.productId)
-                    }
-                    disabled={
-                      getProduct(item.productId) &&
-                      item.quantity >=
-                        getProduct(item.productId)!.quantityInStock
-                    }
+                    loading={status === "pendingAddItem" + item.productId}
+                    disabled={item.quantity >= item.quantityInStock}
                     onClick={() =>
                       dispatch(
                         addBasketItemAsync({

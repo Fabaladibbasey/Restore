@@ -3,6 +3,8 @@ export interface Basket {
     buyerId: string;
     items: BasketItem[];
     subTotal: number;
+    paymentIntentId?: string;
+    clientSecret?: string;
 }
 export interface BasketItem {
     quantity: number;
@@ -12,4 +14,5 @@ export interface BasketItem {
     pictureUrl: string;
     brand: string;
     type: string;
+    quantityInStock: number;
 }

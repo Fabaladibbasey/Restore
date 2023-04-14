@@ -5,6 +5,8 @@ public class Basket
     public int Id { get; set; }
     public string BuyerId { get; set; }
     public List<BasketItem> Items { get; set; } = new();
+    public string? PaymentIntentId { get; set; }
+    public string? ClientSecret { get; set; }
 
     public Basket()
     {
@@ -16,11 +18,11 @@ public class Basket
     }
 
 
-    public decimal subTotal
+    public long subTotal
     {
         get
         {
-            decimal total = 0;
+            long total = 0;
             foreach (var item in Items)
             {
                 total += item.Product.Price * item.Quantity;
@@ -28,6 +30,8 @@ public class Basket
             return total;
         }
     }
+
+    public long DeliveryFee => subTotal > 10000 ? 0 : 500;
 
     public void AddItem(int productId, int quantity = 1)
     {
@@ -67,7 +71,5 @@ public class Basket
         }
         return 0;
     }
-
-
 
 }

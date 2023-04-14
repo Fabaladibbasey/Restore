@@ -54,6 +54,17 @@ public class BasketController : BaseApiController
 
     }
 
+    [HttpDelete("remove")]
+    public async Task<ActionResult> RemoveBasket()
+    {
+        var basket = await _basketServices.RetrieveBasket(GetBuyerId());
+        _context.Baskets.Remove(basket);
+        var result = await _context.SaveChangesAsync() > 0;
+
+        if (result) return Ok();
+        return BadRequest(new ProblemDetails { Title = "Problem deleting basket" });
+
+    }
 
     private string? GetBuyerId()
     {

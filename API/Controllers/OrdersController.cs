@@ -78,11 +78,12 @@ public class OrdersController : BaseApiController
             OrderItems = items,
             Subtotal = subtotal,
             DeliveryFee = deliveryFee,
+            PaymentIntentId = basket.PaymentIntentId
 
         };
 
         _context.Orders.Add(order);
-        basket.Items.Clear();
+        _context.Baskets.Remove(basket);
 
         if (orderDto.SaveAddress)
         {

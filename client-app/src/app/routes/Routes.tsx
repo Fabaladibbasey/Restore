@@ -14,6 +14,7 @@ import App from "../layout/App";
 import TestErrors from "../layout/TestErrors";
 import RouterAuth from "./RouterAuth";
 import Orders from "../../features/order/Orders";
+import CheckoutWrapper from "../../features/checkout/CheckoutWrapper";
 
 export const routes: RouteObject[] = [
   {
@@ -25,7 +26,7 @@ export const routes: RouteObject[] = [
         children: [
           {
             path: "checkout",
-            element: <CheckoutPage />,
+            element: <CheckoutWrapper />,
           },
           { path: "orders", element: <Orders /> },
         ],

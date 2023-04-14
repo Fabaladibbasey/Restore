@@ -13,6 +13,8 @@ public static class BasketExtentions
         {
             Id = basket.Id,
             BuyerId = basket.BuyerId,
+            PaymentIntentId = basket.PaymentIntentId,
+            ClientSecret = basket.ClientSecret,
             Items = basket.Items.Select(i => new BasketItemDto
             {
                 ProductId = i.ProductId,
@@ -21,7 +23,8 @@ public static class BasketExtentions
                 PictureUrl = i.Product.PictureUrl,
                 Quantity = i.Quantity,
                 Brand = i.Product.Brand,
-                Type = i.Product.Type
+                Type = i.Product.Type,
+                QuantityInStock = i.Product.QuantityInStock
 
             }).ToList(),
             subTotal = basket.subTotal

@@ -9,6 +9,7 @@ public class Order
     public int DeliveryFee { get; set; }
     public List<OrderItem> OrderItems { get; set; } = new List<OrderItem>();
     public OrderStatus Status { get; set; } = OrderStatus.Pending;
+    public string? PaymentIntentId { get; set; }
     public decimal Subtotal { get; set; }
     public decimal GetTotal()
     {

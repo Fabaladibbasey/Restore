@@ -85,6 +85,7 @@ builder.Services.AddAuthorization();
 builder.Services.AddScoped<BasketServices>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddScoped<TokenService>();
+builder.Services.AddScoped<IPaymentService, PaymentService>();
 
 var app = builder.Build();
 
