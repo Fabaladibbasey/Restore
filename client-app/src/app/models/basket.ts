@@ -4,7 +4,7 @@ export interface Basket {
     items: BasketItem[];
     subTotal: number;
     paymentIntentId?: string;
-    clientSecret?: string;
+    clientSecret?: string | undefined;
 }
 export interface BasketItem {
     quantity: number;

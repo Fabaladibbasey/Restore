@@ -5,7 +5,7 @@ import { Product } from "../models/product";
 import { router } from "../routes/Routes";
 import { store } from "../store/configureStore";
 
-axios.defaults.baseURL = 'http://localhost:5070/api/';
+axios.defaults.baseURL = import.meta.env.VITE_API_URL as string;
 axios.defaults.withCredentials = true;
 
 const responseBody = (response: AxiosResponse) => response.data;
@@ -19,7 +19,7 @@ axios.interceptors.request.use( async config => {
 })
 
 axios.interceptors.response.use(async (res:AxiosResponse) => {
-        await sleep(500);
+        if (import.meta.env.MODE === 'development') await sleep(300)
         const pagination = res.headers['pagination'];
         if (pagination) {
             res.data = {
@@ -33,6 +33,7 @@ axios.interceptors.response.use(async (res:AxiosResponse) => {
     const {data, status} = error.response as AxiosResponse;
     switch (status) {
         case 400:
+            console.log("400 error", data);
             if (data.errors) {
                 const modelStateErrors: string[] = [];
                 for (const key in data.errors) {
@@ -42,7 +43,7 @@ axios.interceptors.response.use(async (res:AxiosResponse) => {
                 }
                 throw modelStateErrors.flat();
             }
-            toast.error(data.title);
+            toast.error(data.title || data.detail);
             break;
 
         case 401:

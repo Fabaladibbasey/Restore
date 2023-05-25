@@ -1,0 +1,21 @@
+# fly.toml app configuration file generated for restoreweb on 2023-05-25T22:00:27Z
+#
+# See https://fly.io/docs/reference/configuration/ for information about how to use this file.
+#
+
+app = "restoreweb"
+primary_region = "cdg"
+
+[build]
+  image = "fabala/restore:latest"
+
+[env]
+ASPNETCORE_URLS="http://+:8080"
+StripeSettings__PublishableKey="sk_test_51Mue8fLYq7vm0Fr2KSWBzTxcgA187dnOiltClX2D9zDAxGVf56QxOWnN077CFMbyS5KSht4hP5JKxm8VJT2kC7nJ00S5xAmEhi"
+
+[http_service]
+  internal_port = 8080
+  force_https = true
+  auto_stop_machines = true
+  auto_start_machines = true
+  min_machines_running = 0

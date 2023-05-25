@@ -29,9 +29,11 @@ function Login() {
 
   async function submitForm(data: FieldValues) {
     try {
-      await dispatch(signInUser(data)).then(() =>
-        navigate(location.state?.from || "/catalog")
-      );
+      await dispatch(signInUser(data)).then((res) => {
+        if (res.meta.requestStatus === "fulfilled") {
+          navigate(location.state?.from || "/catalog");
+        }
+      });
     } catch (error) {
       console.log("submit", error);
     }

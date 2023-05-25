@@ -45,20 +45,22 @@ function App() {
     setDarkMode(!darkMode);
   };
 
-  if (loading) return <LoadingComponent message="Initialising app..." />;
-
   return (
     <ThemeProvider theme={theme}>
       <ToastContainer position="bottom-right" hideProgressBar theme="colored" />
       <CssBaseline />
       <Header onHandleDarkMode={onHandleDarkMode} darkMode={darkMode} />
-      <Container
-        sx={{
-          marginY: "2rem",
-        }}
-      >
-        <Outlet />
-      </Container>
+      {loading ? (
+        <LoadingComponent message="Initialising app" />
+      ) : (
+        <Container
+          sx={{
+            marginTop: "2rem",
+          }}
+        >
+          <Outlet />
+        </Container>
+      )}
     </ThemeProvider>
   );
 }

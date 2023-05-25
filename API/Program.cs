@@ -40,10 +40,34 @@ builder.Services.AddSwaggerGen(c =>
             });
     }
 );
-builder.Services.AddDbContext<StoreContext>(options =>
-{
-    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection"));
 
+string connString;
+if (builder.Environment.IsDevelopment())
+    connString = builder.Configuration.GetConnectionString("DefaultConnection");
+else
+{
+    // Use connection string provided at runtime by FlyIO.
+    var connUrl = Environment.GetEnvironmentVariable("DATABASE_URL");
+
+    // Parse connection URL to connection string for Npgsql
+    connUrl = connUrl.Replace("postgres://", string.Empty);
+    string pgUserPass = connUrl.Split("@")[0];
+    string pgHostPortDb = connUrl.Split("@")[1];
+    string pgHostPort = pgHostPortDb.Split("/")[0];
+    string pgDb = pgHostPortDb.Split("/")[1];
+    string pgUser = pgUserPass.Split(":")[0];
+    string pgPass = pgUserPass.Split(":")[1];
+    string pgHost = pgHostPort.Split(":")[0];
+    string pgPort = pgHostPort.Split(":")[1];
+    string updatedHost = pgHost.Replace("flycast", "internal");
+
+    connString = $"Server={updatedHost};Port={pgPort};User Id={pgUser};Password={pgPass};Database={pgDb}";
+}
+
+
+builder.Services.AddDbContext<StoreContext>(opt =>
+{
+    opt.UseNpgsql(connString);
 });
 
 builder.Services.AddCors(options =>
@@ -102,6 +126,8 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseDefaultFiles();
+app.UseStaticFiles();
 app.UseCors("CorsPolicy");
 
 app.UseAuthentication();
@@ -109,6 +135,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+app.MapFallbackToController("Index", "Fallback");
 
 
 using var scope = app.Services.CreateScope();

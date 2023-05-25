@@ -26,6 +26,7 @@ import {
 } from "@stripe/react-stripe-js";
 import { Basket } from "../../app/models/basket";
 import { fetchCurrentUser } from "../account/accountSlice";
+import { Link } from "react-router-dom";
 
 const steps = ["Shipping address", "Review your order", "Payment details"];
 
@@ -176,6 +177,36 @@ function CheckoutPage({ basket }: Props) {
       return !methods.formState.isValid;
     }
   }
+
+  if (
+    !paymentSucceeded &&
+    !orderNumber &&
+    (!basket || !basket.items || basket.items.length === 0)
+  )
+    return (
+      <Box
+        style={{
+          width: "100%",
+          height: "calc(100vh - 120px)",
+          display: "flex",
+          flexDirection: "column",
+          justifyItems: "center",
+          justifyContent: "center",
+        }}
+      >
+        <Typography variant="h5" align="center">
+          Your Basket is Empty, sorry you can't proceed with checkout
+        </Typography>
+        <Button
+          sx={{ width: 300, margin: "20px auto" }}
+          size="small"
+          component={Link}
+          to="/catalog"
+        >
+          Go to Catalog
+        </Button>
+      </Box>
+    );
 
   return (
     <FormProvider {...methods}>
