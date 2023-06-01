@@ -17,3 +17,14 @@ export interface Product {
     pageNumber: number;
     pageSize: number;
   }
+
+  export interface ProductFormValues {
+    file: Blob | null;
+    name: string;
+    description: string;
+    price: number;
+    type: string;
+    brand: string;
+    quantityInStock: number;
+
+  }

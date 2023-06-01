@@ -101,6 +101,16 @@ export const catalogSlice = createSlice({
         },
         setMetaData: (state, action) => {
             state.metaData = action.payload;
+        },
+        
+        setProduct: (state, action) => {
+            productsAdapter.upsertOne(state, action.payload);
+            state.productsLoaded = false; // to force reload of products inorder to correctly update the pagination and which made above line of code unnecessary
+        },
+
+        removeProduct: (state, action) => {
+            productsAdapter.removeOne(state, action.payload);
+            state.productsLoaded = false; // to force reload of products inorder to correctly update the pagination and which made above line of code unnecessary
         }
     
     },
@@ -147,5 +157,5 @@ export const catalogSlice = createSlice({
     }
 });
 
-export const { setProductParams, resetProductParams } = catalogSlice.actions;
+export const { setProductParams, resetProductParams, setProduct, removeProduct } = catalogSlice.actions;
 

@@ -100,7 +100,9 @@ export const accountSlice = createSlice({
         })
 
         builder.addMatcher(isAnyOf(signInUser.fulfilled, fetchCurrentUser.fulfilled), (state, action) => {
-            state.user = action.payload
+            let claims = JSON.parse(atob(action.payload.token!.split('.')[1]))
+            const roles = typeof claims.role === 'string' ? [claims.role] : claims.role
+            state.user = {...action.payload, roles}
             localStorage.setItem("user", JSON.stringify(state.user))
         })
 

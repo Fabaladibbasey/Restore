@@ -5,7 +5,6 @@ import Register from "../../features/account/Register";
 import BasketPage from "../../features/basket/BasketPage";
 import Catalog from "../../features/catalog/Catalog";
 import ProductDetail from "../../features/catalog/ProductDetail";
-import CheckoutPage from "../../features/checkout/CheckoutPage";
 import Contact from "../../features/contact/Contact";
 import Home from "../../features/home/Home";
 import NotFound from "../errors/NotFound";
@@ -15,6 +14,7 @@ import TestErrors from "../layout/TestErrors";
 import RouterAuth from "./RouterAuth";
 import Orders from "../../features/order/Orders";
 import CheckoutWrapper from "../../features/checkout/CheckoutWrapper";
+import Inventory from "../../features/admin/Inventory";
 
 export const routes: RouteObject[] = [
   {
@@ -31,6 +31,12 @@ export const routes: RouteObject[] = [
           { path: "orders", element: <Orders /> },
         ],
       },
+
+      {
+        element: <RouterAuth roles={["Admin"]} />,
+        children: [{ path: "inventory", element: <Inventory /> }],
+      },
+
       {
         path: "/",
         element: <Home />,

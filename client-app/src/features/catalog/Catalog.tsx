@@ -5,14 +5,10 @@ import CheckboxButtons from "../../app/components/CheckboxButtons";
 import RadioButtonGroup from "../../app/components/RadioButtonGroup";
 import LoadingComponent from "../../app/layout/LoadingComponent";
 import { useAppDispatch, useAppSelector } from "../../app/store/configureStore";
-import {
-  fetchFiltersAsync,
-  fetchProductsAsync,
-  selectProducts,
-  setProductParams,
-} from "./catalogSlice";
+import { setProductParams } from "./catalogSlice";
 import ProductList from "./ProductList";
 import ProductSearch from "./ProductSearch";
+import useProducts from "../../app/hooks/useProducts";
 
 function Catalog() {
   const sortOptions = [
@@ -21,27 +17,11 @@ function Catalog() {
     { value: "priceAsc", label: "Price - Low to high" },
   ];
 
-  const products = useAppSelector(selectProducts);
   const dispatch = useAppDispatch();
-  const {
-    productsLoaded,
-    filtersLoaded,
-    brands,
-    types,
-    productParams,
-    metaData,
-  } = useAppSelector((state) => state.catalog);
+  const { productParams } = useAppSelector((state) => state.catalog);
+  const { filtersLoaded, brands, types, metaData, products } = useProducts();
 
   const [showFilters, setShowFilters] = useState(false);
-
-  useEffect(() => {
-    if (!productsLoaded) dispatch(fetchProductsAsync());
-  }, [productsLoaded, dispatch]);
-
-  useEffect(() => {
-    if (!filtersLoaded) dispatch(fetchFiltersAsync());
-  }, [dispatch, filtersLoaded]);
-
   const handleShowFilters = (e: any) => {
     if (e && window.innerWidth < 900) setShowFilters(!showFilters);
     else if (window.innerWidth < 900) setShowFilters(false);
