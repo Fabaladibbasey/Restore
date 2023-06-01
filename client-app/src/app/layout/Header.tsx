@@ -51,7 +51,11 @@ function Header({ darkMode, onHandleDarkMode }: Props) {
     setAnchorElUser(null);
   };
 
-  const pages = ["Catalog", "About", "Contact", "Test-Error"];
+  const pages = ["Catalog", "About", "Contact"];
+
+  if (user?.roles?.includes("Admin")) {
+    pages.push("Inventory");
+  }
 
   const settings = user
     ? ["Profile", "Account", "Orders", "Logout"]

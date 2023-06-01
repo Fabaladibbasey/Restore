@@ -27,6 +27,7 @@ import {
 import { Basket } from "../../app/models/basket";
 import { fetchCurrentUser } from "../account/accountSlice";
 import { Link } from "react-router-dom";
+import { setOrdersLoaded } from "../order/orderSlice";
 
 const steps = ["Shipping address", "Review your order", "Payment details"];
 
@@ -38,7 +39,6 @@ function CheckoutPage({ basket }: Props) {
   const [activeStep, setActiveStep] = useState(0);
   const [orderNumber, setOrderNumber] = useState(0);
   const [loading, setLoading] = useState(false);
-
   const { user } = useAppSelector((state) => state.account);
   const dispatch = useAppDispatch();
 
@@ -145,6 +145,7 @@ function CheckoutPage({ basket }: Props) {
         });
         setOrderNumber(order.id);
         dispatch(clearBasket());
+        dispatch(setOrdersLoaded(false));
       } else {
         setPaymentMessage(paymentResult.error?.message || "Payment failed");
       }

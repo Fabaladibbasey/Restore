@@ -61,7 +61,10 @@ export const orderSlice = createSlice({
     reducers: {
         setOrder: (state, action: PayloadAction<Order>) => {
             state.order = action.payload
-        }
+        },
+        setOrdersLoaded: (state, action: PayloadAction<boolean>) => {
+           state.ordersLoaded = action.payload
+        },
     },
     extraReducers: builder => {
         builder.addCase(createOrder.pending, (state) => {
@@ -104,5 +107,5 @@ export const orderSlice = createSlice({
 })
 
 
-export const { setOrder } = orderSlice.actions
+export const { setOrder, setOrdersLoaded } = orderSlice.actions
 

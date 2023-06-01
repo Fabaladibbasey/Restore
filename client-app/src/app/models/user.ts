@@ -10,4 +10,5 @@ export interface User {
     token?: string;
     basket?: Basket,
     userAddress? : ShippingAddress
+    roles? : string[]
 }
